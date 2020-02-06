@@ -14,6 +14,7 @@ example_level_up_card = {
 
 def main():
     d = DrawLevelUpCard(example_level_up_card)
+    d.draw_level_up()
     d.save_image('level_up_out.png')
 
 

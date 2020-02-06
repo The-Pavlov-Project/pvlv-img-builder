@@ -1,3 +1,4 @@
+import os
 from pvlv_img_builder.configurations.configuration import (
     DEFAULT_BACKGROUND_COLOR, DEFAULT_LEVEL_COLOR, DEFAULT_TEXT_COLOR,
     DIR_DEFAULT_FONT,
@@ -75,7 +76,9 @@ class DrawLevelUpCard(object):
 
         self.y_cursor = 0
 
-        self.font_dir = self.data.get('font', DIR_DEFAULT_FONT)
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        self.font_dir = self.data.get('font', dir_path + DIR_DEFAULT_FONT)  # DIR_DEFAULT_FONT
+
         self.font_level = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_LEVEL))
         self.font_title = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_BOLD_TEXT / 1.3))
         self.font_text = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_TEXT / 2))

@@ -38,4 +38,4 @@ DEFAULT_BACKGROUND_BAR_COLOR = GRAY
 DEFAULT_XP_INSIDE_DARK_COLOR = GRAY
 DEFAULT_XP_INSIDE_LIGHT_COLOR = LIGHT_GRAY2
 
-DIR_DEFAULT_FONT = 'pvlv_img_builder/fonts/helveticaneue-light.ttf'
+DIR_DEFAULT_FONT = '/fonts/helveticaneue-light.ttf'
