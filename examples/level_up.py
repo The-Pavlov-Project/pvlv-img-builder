@@ -7,7 +7,7 @@ example_level_up_card = {
     'level_color': (230, 230, 230),
     'title': 'Congratulations User',
     'title_color': (180, 180, 180),
-    'text': 'You have gained a level',
+    'text': 'You have gained a level\nYou have gained a level',
     'text_color': (180, 180, 180),
 }
 

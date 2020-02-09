@@ -1,15 +1,48 @@
 from PIL import Image, ImageDraw
+from io import BytesIO
+from pvlv_img_builder.configurations.configuration import (
+    BACKGROUND_COLOR,
+)
 
 
 class DrawSupport(object):
 
-    @staticmethod
-    def create_image(color_type, width, height, background_color):
-        return Image.new(color_type, (width, height), background_color)
+    def __init__(self, data):
 
-    @staticmethod
-    def create_draw(image):
-        return ImageDraw.Draw(image)
+        self.data = data
+        self.y_resolution = 30
+        self.width = None
+        self.height = 0
+
+        self.background_color = self.data.get('background_color', BACKGROUND_COLOR)
+        self.image: Image = None
+        self.draw: ImageDraw = None
+
+    def build_canvas(self):
+        img = Image.open("img.png")
+        self.image = Image.new("RGB", (self.width, self.height), self.background_color)
+        self.image.paste(img)
+        self.draw = ImageDraw.Draw(self.image)
+
+    def get_section(self, section_name, data, span, default_color):
+        height = 0
+        section_value = str(data.get(section_name))
+        if section_value:
+            height += span * self.y_resolution
+        section_color = data.get('{}_color'.format(section_name), default_color)
+
+        return section_value, height, section_color
+
+    def get_text(self, section_name, data, span, default_color):
+        height = 0
+        section_lines = 0
+        section_value = str(data.get(section_name))
+        if section_value:
+            section_lines = section_value.count('\n') + 1
+            height += span * section_lines * self.y_resolution
+        section_color = data.get('{}_color'.format(section_name), default_color)
+
+        return section_value, height, section_lines, section_color
 
     @staticmethod
     def get_text_dimension(draw_obj, text, font=None):
@@ -71,3 +104,18 @@ class DrawSupport(object):
     @staticmethod
     def draw_rectangle(draw_obj, x, y, x_2, y_2, fill=None):
         draw_obj.rectangle([(x, y), (x_2, y_2)], fill=fill)
+
+    def get_image(self):
+        """
+        :return: image converted as byte array
+        """
+        # convert the image in bytes to send it
+        img_bytes = BytesIO()
+        img_bytes.name = 'level_up.png'
+        self.image.save(img_bytes, format='PNG')
+        img_bytes.seek(0)
+
+        return img_bytes
+
+    def save_image(self, file_dir):
+        self.image.save(file_dir, format='PNG')

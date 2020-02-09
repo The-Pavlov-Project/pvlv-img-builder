@@ -1,5 +1,5 @@
 from pvlv_img_builder.configurations.configuration import (
-    DEFAULT_BACKGROUND_COLOR, DEFAULT_TEXT_COLOR,
+    BACKGROUND_COLOR, TEXT_COLOR,
     DIR_DEFAULT_FONT,
     DEFAULT_BACKGROUND_BAR_COLOR, DEFAULT_BAR_COLOR,
 )
@@ -83,7 +83,7 @@ class DrawRanking(object):
             # reserve the space
             self.height += SPAN_TITLE_SECTION * self.y_resolution
             # get values
-            self.title_color = self.data.get('title_color', DEFAULT_TEXT_COLOR)
+            self.title_color = self.data.get('title_color', TEXT_COLOR)
 
         self.rank_sections = []
         sections = self.data.get('rank', False)
@@ -101,7 +101,7 @@ class DrawRanking(object):
             self.text_lines = self.text.count('\n') + 1
             # reserve the space
             self.height += SPAN_TEXT * self.text_lines * self.y_resolution
-            self.text_color = self.data.get('text_color', DEFAULT_TEXT_COLOR)
+            self.text_color = self.data.get('text_color', TEXT_COLOR)
 
         # last border in the end
         # reserve the space
@@ -111,7 +111,7 @@ class DrawRanking(object):
         # ceil the value to from float to decimal value, cause the img creation need int
         self.height = ceil(self.height)
         self.width = ceil(self.width)
-        background_color = self.data.get('background_color', DEFAULT_BACKGROUND_COLOR)
+        background_color = self.data.get('background_color', BACKGROUND_COLOR)
         self.image = draw_support.create_image("RGB", self.width, self.height, background_color)
         self.draw = draw_support.create_draw(self.image)
 
@@ -182,10 +182,10 @@ class DrawRanking(object):
         highlights = data.get('highlights', False)
         rank = data.get('rank', False)
         rank_label = data.get('rank_label', False)
-        rank_color = data.get('rank_color', DEFAULT_TEXT_COLOR)
+        rank_color = data.get('rank_color', TEXT_COLOR)
         level = data.get('level', False)
         level_label = data.get('level_label', False)
-        level_color = data.get('level_color', DEFAULT_TEXT_COLOR)
+        level_color = data.get('level_color', TEXT_COLOR)
         bar_value = data.get('value', False)
         bar_max = data.get('max', False)
         bar_color = data.get('color', DEFAULT_BAR_COLOR)

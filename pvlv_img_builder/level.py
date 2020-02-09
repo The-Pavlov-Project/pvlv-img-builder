@@ -1,5 +1,5 @@
 from pvlv_img_builder.configurations.configuration import (
-    DEFAULT_BACKGROUND_COLOR, DEFAULT_LEVEL_COLOR, DEFAULT_TEXT_COLOR,
+    BACKGROUND_COLOR, LEVEL_COLOR, TEXT_COLOR,
     DIR_DEFAULT_FONT,
     DEFAULT_BACKGROUND_BAR_COLOR, DEFAULT_BAR_COLOR, DEFAULT_XP_INSIDE_DARK_COLOR, DEFAULT_XP_INSIDE_LIGHT_COLOR
 )
@@ -66,7 +66,7 @@ class DrawLevelCard(object):
             # reserve the space
             self.height += SPAN_USERNAME_SECTION * self.y_resolution
             # get values
-            self.username_color = self.data.get('username_color', DEFAULT_TEXT_COLOR)
+            self.username_color = self.data.get('username_color', TEXT_COLOR)
 
         self.data_section = self.data.get('data', False)
         if self.data_section is not False:
@@ -75,10 +75,10 @@ class DrawLevelCard(object):
             # get values
             self.rank = self.data_section.get('rank', False)
             self.rank_label = self.data_section.get('rank_label', False)
-            self.rank_color = self.data_section.get('rank_color', DEFAULT_TEXT_COLOR)
+            self.rank_color = self.data_section.get('rank_color', TEXT_COLOR)
             self.level = self.data_section.get('level', False)
             self.level_label = self.data_section.get('level_label', False)
-            self.level_color = self.data_section.get('level_color', DEFAULT_TEXT_COLOR)
+            self.level_color = self.data_section.get('level_color', TEXT_COLOR)
 
         # add space for SPAN_BAR
         self.bar_section = self.data.get('bar', False)
@@ -101,7 +101,7 @@ class DrawLevelCard(object):
             # reserve the space
             self.height += SPAN_TEXT * self.text_lines * self.y_resolution
 
-        self.text_color = self.data.get('text_color', DEFAULT_TEXT_COLOR)
+        self.text_color = self.data.get('text_color', TEXT_COLOR)
 
         # last border in the end
         # reserve the space
@@ -110,7 +110,7 @@ class DrawLevelCard(object):
         # prepare the canvas
         # ceil the value to from float to decimal value, cause the img creation need int
         self.height = ceil(self.height)
-        background_color = self.data.get('background_color', DEFAULT_BACKGROUND_COLOR)
+        background_color = self.data.get('background_color', BACKGROUND_COLOR)
         self.image = draw_support.create_image("RGB", self.width, self.height, background_color)
         self.draw = draw_support.create_draw(self.image)
 

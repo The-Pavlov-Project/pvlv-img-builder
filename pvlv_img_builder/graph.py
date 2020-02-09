@@ -1,5 +1,5 @@
 from pvlv_img_builder.configurations.configuration import (
-    DEFAULT_BACKGROUND_COLOR, DEFAULT_TOP_TITLE_COLOR, DEFAULT_TEXT_COLOR, DEFAULT_TOWER_2_COLOR,
+    BACKGROUND_COLOR, DEFAULT_TOP_TITLE_COLOR, TEXT_COLOR, DEFAULT_TOWER_2_COLOR,
     DIR_DEFAULT_FONT
 )
 from pvlv_img_builder.utils.formatting import remap_range
@@ -137,7 +137,7 @@ class DrawGraph(object):
         self.height += SPAN_BORDER * self.y_resolution
 
         self.height = ceil(self.height)
-        background_color = self.data.get('background_color', DEFAULT_BACKGROUND_COLOR)
+        background_color = self.data.get('background_color', BACKGROUND_COLOR)
         self.image = draw_support.create_image("RGB", self.width, self.height, background_color)
         self.draw = draw_support.create_draw(self.image)
 
@@ -150,8 +150,8 @@ class DrawGraph(object):
         self.font_text = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_GRAPH_BORDER / 2))
         self.font_description = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_BORDER / 1.4))
 
-        self.title_color = self.data.get('text_color', DEFAULT_TEXT_COLOR)
-        self.text_color = self.data.get('title_color', DEFAULT_TEXT_COLOR)
+        self.title_color = self.data.get('text_color', TEXT_COLOR)
+        self.text_color = self.data.get('title_color', TEXT_COLOR)
 
     def __remap_values(self, data, max_value):
         value_array = []
