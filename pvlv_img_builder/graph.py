@@ -6,7 +6,7 @@ from pvlv_img_builder.utils.formatting import remap_range
 from PIL import ImageFont
 from io import BytesIO
 from math import ceil
-from pvlv_img_builder.support import DrawSupport
+from pvlv_img_builder.modules.support import DrawSupport
 
 draw_support = DrawSupport()
 

@@ -1,13 +1,13 @@
 from pvlv_img_builder.configurations.configuration import (
     BACKGROUND_COLOR, TEXT_COLOR,
     DIR_DEFAULT_FONT,
-    DEFAULT_BACKGROUND_BAR_COLOR, DEFAULT_BAR_COLOR,
+    BAR_B_COLOR, BAR_A_COLOR,
 )
 from PIL import ImageFont
 from io import BytesIO
 from math import ceil
 from pvlv_img_builder.utils.formatting import remap_range
-from pvlv_img_builder.support import DrawSupport
+from pvlv_img_builder.modules.support import DrawSupport
 draw_support = DrawSupport()
 
 
@@ -188,8 +188,8 @@ class DrawRanking(object):
         level_color = data.get('level_color', TEXT_COLOR)
         bar_value = data.get('value', False)
         bar_max = data.get('max', False)
-        bar_color = data.get('color', DEFAULT_BAR_COLOR)
-        bar_background_color = data.get('background_color', DEFAULT_BACKGROUND_BAR_COLOR)
+        bar_color = data.get('color', BAR_A_COLOR)
+        bar_background_color = data.get('background_color', BAR_B_COLOR)
 
         x_cursor = self.x_resolution*DIM_OFFSET
 

@@ -4,8 +4,8 @@ from pvlv_img_builder.configurations.configuration import (
 )
 from PIL import ImageFont
 from math import ceil
-from pvlv_img_builder.support import DrawSupport, Position
-from pvlv_img_builder.support import (
+from pvlv_img_builder.draw_support import DrawSupport, Position
+from pvlv_img_builder.draw_support import (
     SPAN_TITLE,
     SPAN_TEXT,
     SPAN_BORDER,
@@ -57,7 +57,7 @@ class DrawLevelUpCard(DrawSupport):
 
     def draw_level_up(self):
 
-        self.section_line()
+        self.debug_section_line()
 
         self.draw_text(
             self.width / 2,
@@ -68,7 +68,7 @@ class DrawLevelUpCard(DrawSupport):
             anchor=Position.CENTER,
         )
 
-        self.section_line()
+        self.debug_section_line()
 
         self.draw_text(
             self.width / 2,
@@ -78,15 +78,16 @@ class DrawLevelUpCard(DrawSupport):
             fill=self.bold_text_color
         )
 
-        self.section_line()
+        self.debug_section_line()
 
-        self.draw_multiline_text_in_center(
+        self.draw_multiline_text(
             self.width / 2,
             self.text,
+            lines=self.text_lines,
             span=SPAN_TEXT,
             font=self.font_text,
             fill=self.text_color,
             align=Position.CENTER,
         )
 
-        self.section_line()
+        self.debug_section_line()

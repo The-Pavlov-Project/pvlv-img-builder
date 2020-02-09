@@ -14,9 +14,11 @@ example_level_up_card = {
 
 def main():
     t1 = time()
+
     d = DrawLevelUpCard(example_level_up_card)
     d.draw_level_up()
     d.save_image('level_up_out.png')
+
     t2 = time()
     t = (t2-t1) * 1000
     print('{} ms'.format(int(t)))

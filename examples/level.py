@@ -1,3 +1,4 @@
+from time import time
 from pvlv_img_builder.level_card import DrawLevelCard
 
 
@@ -21,15 +22,21 @@ example_level_card = {
         'inside_xp_dark_color': (105, 105, 105),
         'inside_xp_light_color': (230, 230, 230),
     },
-    'text': 'Cool keep going like that',
+    'text': 'Cool keep going like that\nI\'m proud of you',
     'text_color': (180, 180, 180),
 }
 
 
 def main():
+    t1 = time()
+
     d = DrawLevelCard(example_level_card)
     d.draw_level_card()
-    d.save_image('level.png')
+    d.save_image('level_out.png')
+
+    t2 = time()
+    t = (t2 - t1) * 1000
+    print('{} ms'.format(int(t)))
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
+from pvlv_img_builder.utils.positions import Position
 from pvlv_img_builder.configurations.configuration import (
     DEBUG,
     BACKGROUND_COLOR,
@@ -12,15 +13,9 @@ SPAN_TITLE = 1.8
 SPAN_TEXT = 1
 
 
-class Position(enumerate):
-    UP = 'up'
-    DOWN = 'down'
-    RIGHT = 'right'
-    LEFT = 'left'
-    CENTER = 'center'
-
-
 class DrawSupport(object):
+
+    X_BORDER_OFFSET = 25
 
     def __init__(self, data):
 
@@ -42,7 +37,7 @@ class DrawSupport(object):
 
         # Standard fonts Global for all the canvas
         self.font_title = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_TEXT / 1.3))
-        self.font_text = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_TEXT / 2))
+        self.font_text = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_TEXT / 1.8))
 
     def build_canvas(self):
         # img = Image.open("img.png")
@@ -80,21 +75,22 @@ class DrawSupport(object):
         return w, h
 
     # if there is no y it means that the draw is y automated and should follow the y_cursor
-    def update_y_cursor(self, span, align=Position.CENTER):
+    def update_y_cursor(self, span, align=Position.CENTER, frame=False, lines=1):
 
-        y_cursor_increment = (span / 2) * self.y_resolution
+        y_cursor_increment = (span * lines / 2) * self.y_resolution
+        self.y_cursor += y_cursor_increment
+        y = self.y_cursor
 
         if align == Position.UP:
-            increment = y_cursor_increment - 2/3*y_cursor_increment
-            y = self.y_cursor + increment
+            y = self.y_cursor - 2/3*y_cursor_increment
         elif align == Position.DOWN:
-            increment = y_cursor_increment + 2/3*y_cursor_increment
-            y = self.y_cursor + increment
-        else:
-            y = self.y_cursor + y_cursor_increment
+            y = self.y_cursor + 2/3*y_cursor_increment
 
-        self.y_cursor += y_cursor_increment * 2
+        self.debug_section_line(width=1)
+        self.y_cursor += y_cursor_increment
 
+        if frame:
+            return self.y_cursor - y_cursor_increment*2, self.y_cursor
         return y
 
     def draw_text(self, x, text, y=None, span=1, fill=None, font=None, anchor=None, origin_x=None, origin_y=None):
@@ -120,23 +116,26 @@ class DrawSupport(object):
         if origin_y == Position.UP:
             _y = y - h
         elif origin_y == Position.DOWN:
-            _y = y + h
+            _y = y
         else:
-            _y = y - h / 2
+            _y = y - (h/2)
 
         if origin_x == Position.RIGHT:
             _x = x
         elif origin_x == Position.LEFT:
             _x = x - w
         else:
-            _x = x - w / 2
+            _x = x - (w / 2)
+
+        if DEBUG:
+            self.draw.rectangle([(_x, _y), (_x + w, _y + h)])  # text box
 
         self.draw.text([_x, _y], text, fill=fill, font=font, anchor=anchor)
 
-    def draw_multiline_text_in_center(self, x, text, y=None, span=1, fill=None, font=None, anchor=None, align=None):
+    def draw_multiline_text(self, x, text, y=None, lines=1, span=1, fill=None, font=None, anchor=None, align=None):
         """
         :param x: value of x entry point
-        :param y: value of y entry point
+        :param y: value of y entry point, if none it will handle it automatically
         :param text: string of the name that you want to print
         :param span: the di dimension of the section
         :param fill: fill
@@ -148,9 +147,13 @@ class DrawSupport(object):
             return
 
         if not y:
-            y = self.update_y_cursor(span)
+            y = self.update_y_cursor(span, lines=lines)
 
-        w, h = self.draw.textsize(text, font=font)
+        w, h = self.draw.multiline_textsize(text, font=font)
+
+        if DEBUG:
+            self.draw.rectangle([(x, y), (x + w / 2, y + h / 2)])  # text box
+
         self.draw.multiline_text([(x - w / 2), (y - h / 2)], text, fill=fill, font=font, anchor=anchor, align=align)
 
     @staticmethod
@@ -172,6 +175,6 @@ class DrawSupport(object):
     def save_image(self, file_dir):
         self.image.save(file_dir, format='PNG')
 
-    def section_line(self):
+    def debug_section_line(self, width=2):
         if DEBUG:
-            self.draw.line([(0, self.y_cursor), (self.width, self.y_cursor)], width=1)
+            self.draw.line([(0, self.y_cursor), (self.width, self.y_cursor)], width=width)
