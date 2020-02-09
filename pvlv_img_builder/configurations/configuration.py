@@ -10,6 +10,9 @@ try:
 except Exception as exc:
     print(exc)
 
+# Debug
+DEBUG = parser.get('debug', 'DEBUG', fallback=True)
+
 # colors
 GRAY = parser.get('colors', 'GRAY', fallback=(105, 105, 105))
 GRAY_BLUE = parser.get('colors', 'GRAY_BLUE', fallback=(180, 180, 255))
@@ -38,5 +41,4 @@ DEFAULT_BACKGROUND_BAR_COLOR = GRAY
 DEFAULT_XP_INSIDE_DARK_COLOR = GRAY
 DEFAULT_XP_INSIDE_LIGHT_COLOR = LIGHT_GRAY2
 
-# DIR_DEFAULT_FONT = '/fonts/helveticaneue-light.ttf'
-DIR_DEFAULT_FONT = parser.get('fonts', 'GREEN', fallback='/fonts/code.otf')
+DIR_DEFAULT_FONT = parser.get('fonts', 'GREEN', fallback='/fonts/komikax.ttf')

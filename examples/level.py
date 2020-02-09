@@ -1,9 +1,9 @@
-from pvlv_img_builder.level import DrawLevelCard
+from pvlv_img_builder.level_card import DrawLevelCard
 
 
 example_level_card = {
     'background_color': (62, 62, 62),
-    'username': 'Congratulations User',
+    'username': 'Revolver chicken',
     'username_color': (180, 180, 180),
     'data': {
         'rank': 'N/D',
@@ -14,11 +14,11 @@ example_level_card = {
         'level_color': (230, 230, 230),
     },
     'bar': {
-        'value': '2341',
-        'max': '8000',
+        'value': 2341,
+        'max': 8000,
         'bar_color': (230, 230, 230),
-        'bar_background_color': (230, 230, 230),
-        'inside_xp_dark_color': (230, 230, 230),
+        'bar_background_color': (105, 105, 105),
+        'inside_xp_dark_color': (105, 105, 105),
         'inside_xp_light_color': (230, 230, 230),
     },
     'text': 'Cool keep going like that',
@@ -28,6 +28,7 @@ example_level_card = {
 
 def main():
     d = DrawLevelCard(example_level_card)
+    d.draw_level_card()
     d.save_image('level.png')
 
 
