@@ -1,8 +1,18 @@
+import os
 from PIL import Image, ImageDraw
 from io import BytesIO
 from pvlv_img_builder.configurations.configuration import (
     BACKGROUND_COLOR,
+    DIR_DEFAULT_FONT,
 )
+
+
+class Position(enumerate):
+    UP = 'up'
+    DOWN = 'down'
+    RIGHT = 'right'
+    LEFT = 'left'
+    CENTER = 'center'
 
 
 class DrawSupport(object):
@@ -14,9 +24,15 @@ class DrawSupport(object):
         self.width = None
         self.height = 0
 
+        self.x_cursor = 0
+        self.y_cursor = 0
+
         self.background_color = self.data.get('background_color', BACKGROUND_COLOR)
         self.image: Image = None
         self.draw: ImageDraw = None
+
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        self.font_dir = self.data.get('font', dir_path + DIR_DEFAULT_FONT)
 
     def build_canvas(self):
         img = Image.open("img.png")
@@ -44,62 +60,77 @@ class DrawSupport(object):
 
         return section_value, height, section_lines, section_color
 
-    @staticmethod
-    def get_text_dimension(draw_obj, text, font=None):
+    def get_text_dimension(self, text, font=None):
         """
-        :param draw_obj: object where draw
         :param text: string of the name that you want to print
         :param font: font
         :return: the width abd the high of the text if printed
         """
-        w, h = draw_obj.textsize(text, font=font)
+        w, h = self.draw.textsize(text, font=font)
         return w, h
 
-    @staticmethod
-    def draw_text(draw_obj, x, y, text, fill=None, font=None, anchor=None, origin_x=None, origin_y=None):
+    # if there is no y it means that the draw is y automated and should follow the y_cursor
+    def __update_y_cursor(self, span):
+        y_cursor_increment = (span / 2) * self.y_resolution
+        y = self.y_cursor + y_cursor_increment
+        self.y_cursor += y_cursor_increment * 2
+        return y
+
+    def draw_text(self, x, text, y=None, span=1, fill=None, font=None, anchor=None, origin_x=None, origin_y=None):
         """
-        :param draw_obj: object where draw
         :param x: value of x entry point
         :param y: value of y entry point
         :param text: string of the name that you want to print
+        :param span: the di dimension of the section
         :param fill: fill
         :param font: font
         :param anchor: value_printed
         :param origin_x: where the text must start in reference of the origin (center, right or left)
         :param origin_y: same of x but up, down and center
         """
-        w, h = draw_obj.textsize(text, font=font)
+        if not text:
+            return
 
-        if origin_y == 'up':
+        if not y:
+            y = self.__update_y_cursor(span)
+
+        w, h = self.draw.textsize(text, font=font)
+
+        if origin_y == Position.UP:
             _y = y - h
-        elif origin_y == 'down':
+        elif origin_y == Position.DOWN:
             _y = y + h
         else:
             _y = y - h / 2
 
-        if origin_x == 'right':
+        if origin_x == Position.RIGHT:
             _x = x
-        elif origin_x == 'left':
+        elif origin_x == Position.LEFT:
             _x = x - w
         else:
             _x = x - w / 2
 
-        draw_obj.text([_x, _y], text, fill=fill, font=font, anchor=anchor)
+        self.draw.text([_x, _y], text, fill=fill, font=font, anchor=anchor)
 
-    @staticmethod
-    def draw_multiline_text_in_center(draw_obj, x, y, text, fill=None, font=None, anchor=None, align=None):
+    def draw_multiline_text_in_center(self, x, text, y=None, span=1, fill=None, font=None, anchor=None, align=None):
         """
-        :param draw_obj: object where draw
         :param x: value of x entry point
         :param y: value of y entry point
         :param text: string of the name that you want to print
+        :param span: the di dimension of the section
         :param fill: fill
         :param font: font
         :param anchor: anchor
         :param align: align
         """
-        w, h = draw_obj.textsize(text, font=font)
-        draw_obj.multiline_text([(x - w / 2), (y - h / 2)], text, fill=fill, font=font, anchor=anchor, align=align)
+        if not text:
+            return
+
+        if not y:
+            y = self.__update_y_cursor(span)
+
+        w, h = self.draw.textsize(text, font=font)
+        self.draw.multiline_text([(x - w / 2), (y - h / 2)], text, fill=fill, font=font, anchor=anchor, align=align)
 
     @staticmethod
     def draw_rectangle(draw_obj, x, y, x_2, y_2, fill=None):

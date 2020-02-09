@@ -1,12 +1,10 @@
-import os
 from pvlv_img_builder.configurations.configuration import (
-    BACKGROUND_COLOR, LEVEL_COLOR, TEXT_COLOR,
-    DIR_DEFAULT_FONT,
+    LEVEL_COLOR,
+    TEXT_COLOR,
 )
-from PIL import ImageFont, Image, ImageDraw
-from io import BytesIO
+from PIL import ImageFont
 from math import ceil
-from pvlv_img_builder.support import DrawSupport
+from pvlv_img_builder.support import DrawSupport, Position
 
 
 """                   
@@ -54,14 +52,9 @@ class DrawLevelUpCard(DrawSupport):
         self.height += h
 
         self.height += SPAN_BORDER * self.y_resolution
-
         self.height = ceil(self.height)
-        self.y_cursor = 0
 
         self.build_canvas()
-
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.font_dir = self.data.get('font', dir_path + DIR_DEFAULT_FONT)  # DIR_DEFAULT_FONT
 
         self.font_level = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_LEVEL))
         self.font_title = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_BOLD_TEXT / 1.3))
@@ -69,55 +62,27 @@ class DrawLevelUpCard(DrawSupport):
 
     def draw_level_up(self):
 
-        if self.level is not False:
-            self.y_cursor += (SPAN_LEVEL_SECTION / 2) * self.y_resolution
-            self.draw_text(
-                self.draw,
-                self.width / 2,
-                self.y_cursor,
-                self.level,
-                font=self.font_level,
-                fill=self.level_color
-            )
-            self.y_cursor += (SPAN_LEVEL_SECTION / 2) * self.y_resolution
+        self.draw_text(
+            self.width / 2,
+            self.level,
+            span=SPAN_LEVEL_SECTION,
+            font=self.font_level,
+            fill=self.level_color
+        )
 
-        if self.title is not False:
-            self.y_cursor += (SPAN_BOLD_TEXT / 2) * self.y_resolution
-            self.draw_text(
-                self.draw,
-                self.width / 2,
-                self.y_cursor,
-                self.title,
-                font=self.font_title,
-                fill=self.title_color
-            )
-            self.y_cursor += (SPAN_BOLD_TEXT / 2) * self.y_resolution
+        self.draw_text(
+            self.width / 2,
+            self.title,
+            span=SPAN_BOLD_TEXT,
+            font=self.font_title,
+            fill=self.title_color
+        )
 
-        if self.text is not False:
-            self.y_cursor += (SPAN_TEXT * self.text_lines / 2) * self.y_resolution
-            self.draw_multiline_text_in_center(
-                self.draw,
-                self.width / 2,
-                self.y_cursor,
-                self.text,
-                font=self.font_text,
-                fill=self.text_color,
-                align='center'
-            )
-            self.y_cursor += (SPAN_TEXT * self.text_lines / 2) * self.y_resolution
-
-    def get_image(self):
-
-        """
-        :return: image converted as byte array
-        """
-        # convert the image in bytes to send it
-        img_bytes = BytesIO()
-        img_bytes.name = 'level_up.png'
-        self.image.save(img_bytes, format='PNG')
-        img_bytes.seek(0)
-
-        return img_bytes
-
-    def save_image(self, file_dir):
-        self.image.save(file_dir, format='PNG')
+        self.draw_multiline_text_in_center(
+            self.width / 2,
+            self.text,
+            span=SPAN_TEXT,
+            font=self.font_text,
+            fill=self.text_color,
+            align=Position.CENTER,
+        )
