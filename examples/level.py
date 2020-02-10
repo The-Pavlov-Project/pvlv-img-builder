@@ -17,10 +17,10 @@ example_level_card = {
     'bar': {
         'value': 2341,
         'max': 8000,
-        'bar_color': (230, 230, 230),
-        'bar_background_color': (105, 105, 105),
-        'inside_xp_dark_color': (105, 105, 105),
-        'inside_xp_light_color': (230, 230, 230),
+        'bar_color_a': (230, 230, 230),
+        'bar_color_b': (105, 105, 105),
+        'bar_inside_text_a_color': (105, 105, 105),
+        'bar_inside_text_b_color': (230, 230, 230),
     },
     'text': 'Cool keep going like that\nI\'m proud of you',
     'text_color': (180, 180, 180),
@@ -32,7 +32,7 @@ def main():
 
     d = DrawLevelCard(example_level_card)
     d.draw_level_card()
-    d.save_image('level_out.png')
+    d.save_image('out/level_out.png')
 
     t2 = time()
     t = (t2 - t1) * 1000

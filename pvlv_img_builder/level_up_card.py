@@ -48,12 +48,12 @@ class DrawLevelUpCard(DrawSupport):
         self.text, h, self.text_lines, self.text_color = self.get_text('text', self.data, SPAN_TEXT, TEXT_COLOR)
         self.height += h
 
-        self.height += SPAN_BORDER * self.y_resolution
+        self.height += SPAN_BORDER * self.resolution
         self.height = ceil(self.height)
 
         self.build_canvas()
 
-        self.font_bold_text = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_BOLD_TEXT / 1.3))
+        self.font_bold_text = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_BOLD_TEXT / 1.3))
 
     def draw_level_up(self):
 

@@ -43,8 +43,9 @@ class DrawLevelCard(LevelUtils):
         :param data: is a dictionary look the documentation on the top of this file:
         """
         super().__init__(data)
+        self.update_bar_data(data)  # the class will read all the data to build the xp bar
 
-        self.height += SPAN_BORDER * self.y_resolution  # first border at the top
+        self.height += SPAN_BORDER * self.resolution  # first border at the top
 
         self.username, h, self.username_color = self.get_section('username', data, SPAN_TITLE, TITLE_COLOR)
         self.height += h
@@ -52,7 +53,7 @@ class DrawLevelCard(LevelUtils):
         self.data_section = data.get('data')
         if self.data_section:
             # reserve the space
-            self.height += SPAN_DATA * self.y_resolution
+            self.height += SPAN_DATA * self.resolution
             # get values
             self.rank = self.data_section.get('rank', 'N/D')
             self.rank_label = self.data_section.get('rank_label', 'RANK')
@@ -67,18 +68,18 @@ class DrawLevelCard(LevelUtils):
         """
         self.bar_section = data.get('bar')
         if self.bar_section:
-            self.height += SPAN_XP_BAR * self.y_resolution
+            self.height += SPAN_XP_BAR * self.resolution
 
         self.text, h, self.text_lines, self.text_color = self.get_text('text', data, SPAN_TEXT, TEXT_COLOR)
         self.height += h
 
-        self.height += SPAN_BORDER * self.y_resolution  # last border at the end
+        self.height += SPAN_BORDER * self.resolution  # last border at the end
         self.height = ceil(self.height)
 
         self.build_canvas()
 
-        self.font_data_value = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_DATA / 1.6))
-        self.font_data_label = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_DATA / 2.2))
+        self.font_data_value = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_DATA / 1.6))
+        self.font_data_label = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_DATA / 2.2))
 
     def draw_level_card(self):
 
@@ -105,7 +106,8 @@ class DrawLevelCard(LevelUtils):
             origin_x=Position.RIGHT,
             origin_y=Position.UP
         )
-        w, h = self.get_text_dimension(str(self.rank_label), font=self.font_data_label)
+        w, h = self.draw.textsize(str(self.rank_label), font=self.font_data_label)
+
         self.draw_text(
             self.X_BORDER_OFFSET + w,
             ' #{}'.format(self.rank),
@@ -125,7 +127,7 @@ class DrawLevelCard(LevelUtils):
             origin_x=Position.LEFT,
             origin_y=Position.UP
         )
-        w, h = self.get_text_dimension(str(self.level), font=self.font_data_value)
+        w, h = self.draw.textsize(str(self.level), font=self.font_data_value)
         self.draw_text(
             self.width - (self.X_BORDER_OFFSET + w),
             '{} '.format(self.level_label),
@@ -140,7 +142,7 @@ class DrawLevelCard(LevelUtils):
 
         y_frame = self.update_y_cursor(SPAN_XP_BAR, frame=True)
         xy_box = [(self.X_BORDER_OFFSET, y_frame[0]), (self.width - self.X_BORDER_OFFSET, y_frame[1])]
-        self.draw_xp_bar(xy_box, current_xp=self.bar_value, total_xp_level=self.bar_max)
+        self.draw_xp_bar(xy_box)
 
         self.debug_section_line()
 

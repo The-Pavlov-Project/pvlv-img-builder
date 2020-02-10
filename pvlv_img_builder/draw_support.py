@@ -20,12 +20,14 @@ class DrawSupport(object):
     def __init__(self, data):
 
         self.data = data
-        self.y_resolution = 30
+
+        self.resolution = 30
+
         self.width = 350
         self.height = 0
 
         self.x_cursor = 0
-        self.y_cursor = SPAN_BORDER*self.y_resolution
+        self.y_cursor = SPAN_BORDER*self.resolution
 
         self.background_color = self.data.get('background_color', BACKGROUND_COLOR)
         self.image: Image
@@ -36,8 +38,8 @@ class DrawSupport(object):
         self.font_dir = self.data.get('font', dir_path + DIR_DEFAULT_FONT)
 
         # Standard fonts Global for all the canvas
-        self.font_title = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_TEXT / 1.3))
-        self.font_text = ImageFont.truetype(self.font_dir, int(self.y_resolution * SPAN_TEXT / 1.8))
+        self.font_title = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_TEXT / 1.3))
+        self.font_text = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_TEXT / 1.8))
 
     def build_canvas(self):
         # img = Image.open("img.png")
@@ -49,7 +51,7 @@ class DrawSupport(object):
         height = 0
         section_value = str(data.get(section_name))
         if section_value:
-            height += span * self.y_resolution
+            height += span * self.resolution
         section_color = data.get('{}_color'.format(section_name), default_color)
 
         return section_value, height, section_color
@@ -60,24 +62,15 @@ class DrawSupport(object):
         section_value = str(data.get(section_name))
         if section_value:
             section_lines = section_value.count('\n') + 1
-            height += span * section_lines * self.y_resolution
+            height += span * section_lines * self.resolution
         section_color = data.get('{}_color'.format(section_name), default_color)
 
         return section_value, height, section_lines, section_color
 
-    def get_text_dimension(self, text, font=None):
-        """
-        :param text: string of the name that you want to print
-        :param font: font
-        :return: the width abd the high of the text if printed
-        """
-        w, h = self.draw.textsize(text, font=font)
-        return w, h
-
     # if there is no y it means that the draw is y automated and should follow the y_cursor
     def update_y_cursor(self, span, align=Position.CENTER, frame=False, lines=1):
 
-        y_cursor_increment = (span * lines / 2) * self.y_resolution
+        y_cursor_increment = (span * lines / 2) * self.resolution
         self.y_cursor += y_cursor_increment
         y = self.y_cursor
 
@@ -86,7 +79,7 @@ class DrawSupport(object):
         elif align == Position.DOWN:
             y = self.y_cursor + 2/3*y_cursor_increment
 
-        self.debug_section_line(width=1)
+        # self.debug_section_line(width=1)
         self.y_cursor += y_cursor_increment
 
         if frame:
@@ -136,6 +129,7 @@ class DrawSupport(object):
         """
         :param x: value of x entry point
         :param y: value of y entry point, if none it will handle it automatically
+        :param lines: the number of lines in the text
         :param text: string of the name that you want to print
         :param span: the di dimension of the section
         :param fill: fill
