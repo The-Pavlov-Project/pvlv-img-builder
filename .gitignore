@@ -4,7 +4,7 @@
 /build/
 /dist/
 /pvlv_img_builder.egg-info/
-
+/examples/configs/
 
 *.pyc
 *.swp

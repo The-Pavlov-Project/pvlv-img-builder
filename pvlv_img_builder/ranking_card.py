@@ -2,6 +2,7 @@ from math import ceil
 from pvlv_img_builder.configurations.configuration import (
     TEXT_COLOR,
     TITLE_COLOR,
+    GRAY_BLUE,
 )
 from pvlv_img_builder.modules.level_utils import LevelUtils
 from pvlv_img_builder.utils.positions import Position
@@ -29,8 +30,8 @@ from pvlv_img_builder.draw_support import (
     +-----------------------------------------+
 
 """
-SPAN_RANK = 1.5
 
+SPAN_RANK = 1.5
 
 """
         +--------+--------------------+---------------------+-+----------+           
@@ -41,10 +42,11 @@ SPAN_RANK = 1.5
 OFFSET
 
 """
+
 DIM_RANK = 1.5
 DIM_USERNAME = 7
-DIM_XP_BAR = 6
-DIM_LEVEL = 4
+DIM_XP_BAR = 7
+DIM_LEVEL = 3
 
 DIM = DIM_RANK + DIM_USERNAME + DIM_XP_BAR + DIM_LEVEL
 
@@ -68,17 +70,17 @@ class DrawRankingCard(LevelUtils):
             # extract the sections and put them into an array
             for key in sections.keys():
                 self.rank_sections.append(sections.get(key))
-                self.height += SPAN_RANK * self.resolution * len(self.rank_sections)
+                self.height += SPAN_RANK * self.resolution
 
         # add space for SPAN_TEXT
         self.text, h, self.text_lines, self.text_color = self.get_text('text', data, SPAN_TEXT, TEXT_COLOR)
         self.height += h
 
-        self.height += SPAN_BORDER * self.resolution # last border in the end
+        self.height += SPAN_BORDER * self.resolution  # last border in the end
 
         # ceil the value to from float to decimal value, cause the img creation need int
         self.height = ceil(self.height)
-        self.width = ceil(self.resolution * DIM)
+        self.width = ceil(self.resolution * DIM + self.X_BORDER_OFFSET*2)
 
         self.build_canvas()
 
@@ -88,20 +90,21 @@ class DrawRankingCard(LevelUtils):
         coords_2 = xy_box[1]
 
         username = data.get('username', 'Anonymous')
+        username_color = data.get('username_color', TEXT_COLOR)
         highlight = data.get('highlight', False)
 
         data_section = data.get('data')
         rank = data_section.get('rank', 'ND')
-        rank_color = data_section.get('rank_color', TEXT_COLOR)
+        rank_color = data_section.get('rank_color', GRAY_BLUE)
         level = data_section.get('level', 'ND')
         level_label = data_section.get('level_label', 'LEVEL')
-        level_color = data_section.get('level_color', TEXT_COLOR)
+        level_color = data_section.get('level_color', GRAY_BLUE)
 
         y_cursor = coords_1[1] + (coords_2[1] - coords_1[1]) / 2
 
         self.draw_text(
             self.X_BORDER_OFFSET,
-            ' #{}'.format(rank),
+            '#{} '.format(rank),
             y=y_cursor,
             font=self.font_text,
             fill=rank_color,
@@ -110,14 +113,14 @@ class DrawRankingCard(LevelUtils):
         )
 
         # to know the space between rank and username to keep all in line
-        biggest_rank_txt = ' #{}'.format(biggest_rank)
+        biggest_rank_txt = '#{} '.format(biggest_rank)
         w, h = self.draw.textsize(biggest_rank_txt, font=self.font_text)
         self.draw_text(
             self.X_BORDER_OFFSET + w,
             ' '+username,
             y=y_cursor,
             font=self.font_text,
-            fill=rank_color,
+            fill=username_color if not highlight else GRAY_BLUE,
             origin_x=Position.RIGHT,
             origin_y=Position.CENTER,
         )
@@ -139,7 +142,7 @@ class DrawRankingCard(LevelUtils):
             level_label,
             y=y_cursor,
             font=self.font_text,
-            fill=level_color,
+            fill=self.text_color,
             origin_x=Position.LEFT,
             origin_y=Position.CENTER,
         )

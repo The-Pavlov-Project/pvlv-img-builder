@@ -52,8 +52,8 @@ class LevelUtils(DrawSupport):
         self.bar_inside_text_a_color = self.bar_section.get('bar_inside_text_a_color', BAR_INSIDE_TEXT_A_COLOR)
         self.bar_inside_text_b_color = self.bar_section.get('bar_inside_text_b_color', BAR_INSIDE_TEXT_B_COLOR)
 
-        self.font_xp_bar_text = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_BAR / 1.6))
-        self.font_xp_data = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_DATA / 1.2))
+        self.font_xp_bar_text = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_BAR * 0.8))
+        self.font_xp_data = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_DATA * 0.8))
 
     def draw_xp_bar(self, xy_box, xp_reference=True):
         """

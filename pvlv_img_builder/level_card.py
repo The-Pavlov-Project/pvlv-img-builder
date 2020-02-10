@@ -55,10 +55,10 @@ class DrawLevelCard(LevelUtils):
             # reserve the space
             self.height += SPAN_DATA * self.resolution
             # get values
-            self.rank = self.data_section.get('rank', 'N/D')
+            self.rank = self.data_section.get('rank', 'ND')
             self.rank_label = self.data_section.get('rank_label', 'RANK')
             self.rank_color = self.data_section.get('rank_color', TEXT_COLOR)
-            self.level = self.data_section.get('level', 'N/D')
+            self.level = self.data_section.get('level', 'ND')
             self.level_label = self.data_section.get('level_label', 'LEVEL')
             self.level_color = self.data_section.get('level_color', TEXT_COLOR)
 
@@ -78,8 +78,7 @@ class DrawLevelCard(LevelUtils):
 
         self.build_canvas()
 
-        self.font_data_value = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_DATA / 1.6))
-        self.font_data_label = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_DATA / 2.2))
+        self.font_data_value = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_DATA / 1.2))
 
     def draw_level_card(self):
 
@@ -101,12 +100,12 @@ class DrawLevelCard(LevelUtils):
             self.X_BORDER_OFFSET,
             self.rank_label,
             y=y,
-            font=self.font_data_label,
+            font=self.font_text,
             fill=self.rank_color,
             origin_x=Position.RIGHT,
             origin_y=Position.UP
         )
-        w, h = self.draw.textsize(str(self.rank_label), font=self.font_data_label)
+        w, h = self.draw.textsize(str(self.rank_label), font=self.font_text)
 
         self.draw_text(
             self.X_BORDER_OFFSET + w,
@@ -132,7 +131,7 @@ class DrawLevelCard(LevelUtils):
             self.width - (self.X_BORDER_OFFSET + w),
             '{} '.format(self.level_label),
             y=y,
-            font=self.font_data_label,
+            font=self.font_text,
             fill=self.level_color,
             origin_x=Position.LEFT,
             origin_y=Position.UP,

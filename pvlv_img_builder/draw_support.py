@@ -1,4 +1,3 @@
-import os
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 from pvlv_img_builder.utils.positions import Position
@@ -34,9 +33,7 @@ class DrawSupport(object):
         self.draw: ImageDraw
 
         # set the absolute path dir for the font.
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.font_dir = self.data.get('font', dir_path + DIR_DEFAULT_FONT)
-
+        self.font_dir = self.data.get('font', DIR_DEFAULT_FONT)
         # Standard fonts Global for all the canvas
         self.font_title = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_TEXT / 1.3))
         self.font_text = ImageFont.truetype(self.font_dir, int(self.resolution * SPAN_TEXT / 1.8))
@@ -79,7 +76,7 @@ class DrawSupport(object):
         elif align == Position.DOWN:
             y = self.y_cursor + 2/3*y_cursor_increment
 
-        # self.debug_section_line(width=1)
+        self.debug_section_line(width=1)
         self.y_cursor += y_cursor_increment
 
         if frame:

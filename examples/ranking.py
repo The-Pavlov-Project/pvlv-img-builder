@@ -5,27 +5,17 @@ from pvlv_img_builder.ranking_card import DrawRankingCard
 example_level_ranking_card = {
     'background_color': (62, 62, 62),
     'title': 'Ranking of most Active Users',
-    'title_color': (180, 180, 180),
     'rank': {
         '1': {
             'username': 'Username 1',
-            'username_color': (180, 180, 180),
             'highlight': True,
             'data': {
                 'rank': 1,
-                'rank_label': 'RANK',
-                'rank_color': (230, 230, 230),
                 'level': 100,
-                'level_label': 'LEVEL',
-                'level_color': (230, 230, 230),
             },
             'bar': {
                 'value': 2341,
                 'max': 8000,
-                'bar_color_a': (230, 230, 230),
-                'bar_color_b': (105, 105, 105),
-                'bar_inside_text_a_color': (105, 105, 105),
-                'bar_inside_text_b_color': (230, 230, 230),
             },
         },
         '2': {
@@ -49,8 +39,29 @@ example_level_ranking_card = {
                 'bar_inside_text_b_color': (230, 230, 230),
             },
         },
+        '3': {
+            'username': 'Username 3',
+            'username_color': (180, 180, 180),
+            'highlight': True,
+            'data': {
+                'rank': 300,
+                'rank_label': 'RANK',
+                'rank_color': (230, 230, 230),
+                'level': 3,
+                'level_label': 'LEVEL',
+                'level_color': (230, 230, 230),
+            },
+            'bar': {
+                'value': 2341,
+                'max': 8000,
+                'bar_color_a': (230, 230, 230),
+                'bar_color_b': (105, 105, 105),
+                'bar_inside_text_a_color': (105, 105, 105),
+                'bar_inside_text_b_color': (230, 230, 230),
+            },
+        },
     },
-    'text': 'Ranking Data of the most active users',
+    'text': 'Ranking Data of the most active users\nBeta Command',
     'text_color': (180, 180, 180),
 }
 

@@ -1,3 +1,4 @@
+import os
 import configparser as cfg
 
 
@@ -27,6 +28,10 @@ BLUE = parser.get('colors', 'BLUE', fallback=(0, 0, 255))
 RED = parser.get('colors', 'RED', fallback=(255, 0, 0))
 GREEN = parser.get('colors', 'GREEN', fallback=(0, 128, 0))
 
+GOLD = parser.get('colors', 'GOLD', fallback=(212, 175, 55))
+SILVER = parser.get('colors', 'SILVER', fallback=(192, 192, 192))
+BRONZE = parser.get('colors', 'BRONZE', fallback=(205, 127, 50))
+
 # Colors for print out data
 BACKGROUND_COLOR = parser.get('default', 'BACKGROUND_COLOR', fallback=DARK_GRAY)
 TITLE_COLOR = parser.get('default', 'TITLE_COLOR', fallback=LIGHT_GRAY2)
@@ -46,4 +51,5 @@ BAR_INSIDE_TEXT_B_COLOR = parser.get('xp_bar', 'BAR_INSIDE_TEXT_B_COLOR', fallba
 # to adjust the font dimension (cause every font have its own measures)
 FONT_MULTIPLIER = parser.get('fonts', 'FONT_MULTIPLIER', fallback=0)
 
-DIR_DEFAULT_FONT = parser.get('fonts', 'DIR_DEFAULT_FONT', fallback='/fonts/Code Pro LC.otf')
+dir_path = os.path.dirname(os.path.realpath(__file__))
+DIR_DEFAULT_FONT = parser.get('fonts', 'DIR_DEFAULT_FONT', fallback='/fonts/Roboto-Black.ttf')

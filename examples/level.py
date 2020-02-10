@@ -7,7 +7,7 @@ example_level_card = {
     'username': 'Revolver chicken',
     'username_color': (180, 180, 180),
     'data': {
-        'rank': 'N/D',
+        'rank': 'ND',
         'rank_label': 'RANK',
         'rank_color': (230, 230, 230),
         'level': '10',
