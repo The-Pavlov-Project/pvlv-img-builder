@@ -541,4 +541,5 @@ class Paginator:
         return img_bytes
 
     def save_image(self, file_dir):
-        self.image.save(file_dir, format='JPEG')
+        converted = self.image.convert('RGB')  # prepare to JPEG save
+        converted.save(file_dir, format='JPEG')
